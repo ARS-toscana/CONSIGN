@@ -3,14 +3,75 @@
 
 concept_sets_of_our_study_eve <- c("Gestation_less24","Gestation_24","Gestation_25_26","Gestation_27_28","Gestation_29_30","Gestation_31_32","Gestation_33_34","Gestation_36_35","Gestation_more37","Ongoingpregnancy","Birth","Preterm","Atterm","Postterm","Livebirth","Stillbirth","Interruption", "Spontaneousabortion", "Ectopicpregnancy")
 
+concept_sets_of_our_study_procedure <- c("gestational_diabetes","fetal_nuchal_translucency", "amniocentesis","Chorionic_Villus_Sampling","others")
+
+concept_sets_of_our_study_medications <- c("ANTIHYP","ANTICOA","ANTIVIR","ANTIBAC","ANTIMB","IMMUNE","VAC","ANALG","PSYCHOL","PSYCHOA","DIAB")
+
+concept_set_our_study_pre <- c("INSULIN","FGR_narrow","FGR_possible","GESTDIAB_narrow","GESTDIAB_possible","MAJORCA_narrow","MAJORCA_possible","MATERNALDEATH_narrow","MATERNALDEATH_possible","MICROCEPHALY_narrow","MICROCEPHALY_possible","PREECLAMP_narrow","PREECLAMP_possible","PRETERMBIRTH_narrow","PRETERMBIRTH_possible","SPONTABO_narrow","SPONTABO_possible","STILLBIRTH_narrow", "STILLBIRTH_possible", "TOPFA_narrow","TOPFA_possible")
+
+
+# 1.	ANTIHYP - Antihypertensives (C02, C03, C04, C07, C08 and/or C09),
+# 2.	ANTICOA - Anticoagulants/platelet inhibitors (B01),
+# 3.	ANTIVIR - Antivirals (J05), 
+# 4.	ANTIBAC - Antibacterials (J01), 
+# 5.	ANTIMYC - Antimycotics (J02), 
+# 6.	ANTIMB - Antimycobacterials (J04), 
+# 7.	IMMUNE - Immune sera and globulins (J06), 
+# 8.	VAC - Vaccinations (J07), 
+# 9.	ANALG Analgesics (N02), 
+# 10.	PSYCHOL - Psycholeptics (N05), 
+# 11.	PSYCHOA - Psychoanaleptics (N06), 
+# 12.	DIAB - Diabetes (A10), 
+# 13.	CORTICO - Corticoisteroids (H02), 
+# 14.	IMMUNOSTI - Immunostimulants (L03), 
+# 15.	IMMUNOSUP - Immunosuppressants (L04), 
+# 16.	ANTINFLAMM - anti-inflammatory drugs (M01) (especially ibuprofen), 
+# 17.	NASAL - Nasal preparations (R01), 
+# 18.	RESPIR - Medicines for obstructive airway disease (R03), 
+# 19.	COLD - Cough and cold medications (R05)
+
+concept_set_our_study <- c(concept_sets_of_our_study_eve, concept_sets_of_our_study_procedure, concept_sets_of_our_study_medications)
+
+
 
 concept_set_domains<- vector(mode="list")
 for (conceptset in concept_sets_of_our_study_eve){
   concept_set_domains[[conceptset]] = "Diagnosis"  
-} 
+}
+for (conceptset in concept_sets_of_our_study_medications){
+  concept_set_domains[[conceptset]] = "Medicines"  
+}
+concept_set_domains[["VAC"]] = "VaccineATC"
 
 concept_set_codes_our_study<-vector(mode="list")
 #concept_set_codes_our_study_excl<-vector(mode="list")
+
+
+
+############################
+# MEDICATIONS
+############################
+
+concept_set_codes_our_study[["ANTIHYP"]][["ATC"]] <- c("C02", "C03", "C04", "C07", "C08", "C09")
+concept_set_codes_our_study[["ANTICOA"]][["ATC"]] <- c("B01")
+concept_set_codes_our_study[["ANTIVIR"]][["ATC"]] <- c("J05")
+concept_set_codes_our_study[["ANTIBAC"]][["ATC"]] <- c("J01")
+concept_set_codes_our_study[["ANTIMYC"]][["ATC"]] <- c("J02")
+concept_set_codes_our_study[["ANTIMB"]][["ATC"]] <- c("J04")
+concept_set_codes_our_study[["IMMUNE"]][["ATC"]] <- c("J06")
+concept_set_codes_our_study[["VAC"]][["ATC"]] <- c("J07")
+concept_set_codes_our_study[["ANALG"]][["ATC"]] <- c("N02")
+concept_set_codes_our_study[["PSYCHOL"]][["ATC"]] <- c("N05")
+concept_set_codes_our_study[["PSYCHOA"]][["ATC"]] <- c("N06")
+concept_set_codes_our_study[["DIAB"]][["ATC"]] <- c("A10")
+concept_set_codes_our_study[["CORTICO"]][["ATC"]] <- c("H02")
+concept_set_codes_our_study[["IMMUNOSTI"]][["ATC"]] <- c("L03")
+concept_set_codes_our_study[["IMMUNOSUP"]][["ATC"]] <- c("L04")
+concept_set_codes_our_study[["ANTINFLAMM"]][["ATC"]] <- c("M01")
+concept_set_codes_our_study[["NASAL"]][["ATC"]] <- c("R01")
+concept_set_codes_our_study[["RESPIR"]][["ATC"]] <- c("R03")
+concept_set_codes_our_study[["COLD"]][["ATC"]] <- c("R05")
+
 
 
 #--------------------------
@@ -167,7 +228,6 @@ concept_set_codes_our_study[["Ectopicpregnancy"]][["SNOMED"]] <- c("111425004","
 
 # -itemset_AVpair_our_study- is a nested list, with 3 levels: foreach study variable, for each coding system of its data domain, the list of AVpair is recorded
 # fetal_nuchal_translucency
-concept_sets_of_our_study_procedure <- c("gestational_diabetes","fetal_nuchal_translucency", "amniocentesis","Chorionic_Villus_Sampling","others")
 
 # datasources<-c("ARS", "UOSL", "GePaRD", "BIFAP", "FISABIO", "SIDIAP", "CNR-IFC", "CHUT", "UNIME", "CPRD", "THL", "PEDIANET", "TEST")
 
@@ -223,7 +283,6 @@ concept_set_codes_our_study[["ARS"]][["others"]][["ITA_procedures_coding_system"
 
 ####################################
 #######################################
-concept_set_our_study_pre <- c("INSULIN","FGR_narrow","FGR_possible","GESTDIAB_narrow","GESTDIAB_possible","MAJORCA_narrow","MAJORCA_possible","MATERNALDEATH_narrow","MATERNALDEATH_possible","MICROCEPHALY_narrow","MICROCEPHALY_possible","PREECLAMP_narrow","PREECLAMP_possible","PRETERMBIRTH_narrow","PRETERMBIRTH_possible","SPONTABO_narrow","SPONTABO_possible","STILLBIRTH_narrow", "STILLBIRTH_possible", "TOPFA_narrow","TOPFA_possible")
 
 #concept_set_codes_our_study<-vector(mode="list")
 concept_set_codes_our_study_excl <- vector(mode="list")
@@ -515,7 +574,6 @@ concept_set_codes_our_study[["TOPFA_possible"]][["SNOMED"]] <- c("1321008","1499
 
 
 
-concept_set_our_study <- c(concept_sets_of_our_study_eve, concept_set_our_study_pre, concept_sets_of_our_study_procedure)
 
 conceptset_our_study_this_datasource<-vector(mode="list")
 
