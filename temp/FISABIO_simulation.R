@@ -40,6 +40,6 @@ date_to_att <- unique(SURVEY_OBSERVATIONS_FISABIO[, so_date])
 SURVEY_ID_FISABIO <- data.table(person_id = id_to_att)
 SURVEY_ID_FISABIO <- SURVEY_ID_FISABIO[, survey_id := seq(1,5)]
 SURVEY_ID_FISABIO <- SURVEY_ID_FISABIO[, survey_date := date_to_att]
-SURVEY_ID_FISABIO <- SURVEY_ID_FISABIO[, survey_meaning := " "]
+SURVEY_ID_FISABIO <- SURVEY_ID_FISABIO[, survey_meaning := "CA_Registry"]
 SURVEY_ID_FISABIO <- SURVEY_ID_FISABIO[, survey_origin := "MDR"]
 fwrite(SURVEY_ID_FISABIO, paste0(dirinput, "SURVEY_ID_FISABIO.csv"))
