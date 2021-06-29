@@ -1,7 +1,8 @@
 #-------------------------------
-# ACCESS pregnancy
-# v1.0 - 23 June 2021
+# CONSIGN
+# v0.1 - 29 June 2021
 # authors: Claudia Bartolini, Rosa Gini, Giorgio Limoncella, Olga Paoletti, Davide Messina
+# based on ConcePTIONAlgorithmPregnancies https://github.com/ARS-toscana/ConcePTIONAlgorithmPregnancies
 # -----------------------------
 
 
