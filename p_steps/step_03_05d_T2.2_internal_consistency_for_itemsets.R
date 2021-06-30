@@ -37,13 +37,18 @@ if (this_datasource_has_itemsets_stream){
   
   table(D3_study_population_pregnancy1$pregnancy_with_dates_out_of_range) # 19 deleted
   
+  ## NEW EXCLUSION criteria: end after 01-03-2020
+  D3_study_population_pregnancy1<-D3_study_population_pregnancy1[pregnancy_end_date<as.Date("2020-03-01"),pregnancy_befor_pandemic:=1][is.na(pregnancy_befor_pandemic), pregnancy_befor_pandemic:=0]
+  
+  table(D3_study_population_pregnancy1$pregnancy_befor_pandemic) # 
+  
   
   # D3_study_population_pregnancy1<- D3_study_population_pregnancy1[is.na(pregnancy_end_date), no_end_of_pregnancy:=1][is.na(no_end_of_pregnancy),no_end_of_pregnancy:=0]
   # table(D3_study_population_pregnancy1$no_end_of_pregnancy) #49812 deleted
   
   
-  D3_excluded_pregnancies_from_ITEMSETS_1 <-D3_study_population_pregnancy1[pregnancy_with_dates_out_of_range==1,]# | no_end_of_pregnancy==1
-  D3_study_population_pregnancy1 <-D3_study_population_pregnancy1[pregnancy_with_dates_out_of_range==0 ,][,-c("pregnancy_with_dates_out_of_range")]#& no_end_of_pregnancy==0
+  D3_excluded_pregnancies_from_ITEMSETS_1 <-D3_study_population_pregnancy1[pregnancy_with_dates_out_of_range==1 | pregnancy_befor_pandemic==1,]# | no_end_of_pregnancy==1
+  D3_study_population_pregnancy1 <-D3_study_population_pregnancy1[pregnancy_with_dates_out_of_range==0 & pregnancy_befor_pandemic==0,][,-c("pregnancy_with_dates_out_of_range","pregnancy_befor_pandemic")]#& no_end_of_pregnancy==0
   
   
   
