@@ -90,7 +90,7 @@ table(D3_study_population_pregnancy3$no_enough_lb) #
 
 
 # pregancies to be excluded:
-D3_excluded_pregnancies_from_conceptset_2 <- D3_study_population_pregnancy3[no_linked_to_person==1 | person_not_female==1 | person_not_in_fertile_age==1 | pregnancy_start_in_spells==1 | pregnancy_end_in_spells==1 | no_enough_lb==1,]  # to further explore exclusion
+D3_excluded_pregnancies_from_CONCEPTSETS_2 <- D3_study_population_pregnancy3[no_linked_to_person==1 | person_not_female==1 | person_not_in_fertile_age==1 | pregnancy_start_in_spells==1 | pregnancy_end_in_spells==1 | no_enough_lb==1,]  # to further explore exclusion
 
 D3_excluded_pregnancies_from_CONCEPTSETS<-rbind(D3_excluded_pregnancies_from_CONCEPTSETS_1,D3_excluded_pregnancies_from_CONCEPTSETS_2,fill=TRUE)[,-c( "sex_at_instance_creation","date_of_birth","date_death", "age_at_pregnancy_start","op_meaning","num_spell","entry_spell_category","exit_spell_category")]
 save(D3_excluded_pregnancies_from_CONCEPTSETS, file=paste0(dirtemp,"D3_excluded_pregnancies_from_CONCEPTSETS.RData")) # 663830

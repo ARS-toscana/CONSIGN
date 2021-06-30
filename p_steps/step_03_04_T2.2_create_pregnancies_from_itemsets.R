@@ -46,7 +46,7 @@ if (this_datasource_has_itemsets_stream){
     }else{
       print("SPC is not present in simulated data")
     }
-  
+    
   } else{
     
     # merge together all the item sets to define start_of_pregnancy and end_of_pregnancy
@@ -90,7 +90,7 @@ if (this_datasource_has_itemsets_stream){
       
     }
     
-
+    
     #dataset_concept_sets<-dataset_concept_sets[,TOPFA:=""]
     dataset_item_sets<-dataset_item_sets[,ITEMSETS:="yes"]
     setnames(dataset_item_sets,"mo_source_table","origin")
@@ -111,5 +111,3 @@ if (this_datasource_has_itemsets_stream){
     ##################################################################################################################################
   }
 }
-  
-  
