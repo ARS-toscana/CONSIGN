@@ -259,21 +259,21 @@ gop_gybr3<-rbind(gop_blue_NOT2,gop_red_Inblue,fill=TRUE)
 
 # -case 1: repeted record, in case we'll bind them
 gop_gybr3<-gop_gybr3[order(person_id, group_identifier),]
-gop_gybr3<-gop_gybr3[,n_rep:=seq_along(.I), by=.(ID)][,n_rep:=max(n_rep), by=.(ID, group_identifier)][,n_rep_max:=max(n_rep), by=.(group_identifier,person_id)]
+suppressWarnings(gop_gybr3<-gop_gybr3[,n_rep:=seq_along(.I), by=.(ID)][,n_rep:=max(n_rep), by=.(ID, group_identifier)][,n_rep_max:=max(n_rep), by=.(group_identifier,person_id)])
 gop_gybr3<-gop_gybr3[n_rep_max>1 & n_rep_max!=n_rep , group_identifier:=min(group_identifier),by=.(person_id)]
 ## update group_start_date group_end_date
-gop_gybr3<-gop_gybr3[,group_start_date:=min(group_start_date, na.rm = T), by=.(person_id,group_identifier)]
-gop_gybr3<-gop_gybr3[,group_end_date:=max(group_end_date, na.rm = T), by=.(person_id,group_identifier)]
+suppressWarnings(gop_gybr3<-gop_gybr3[,group_start_date:=min(group_start_date, na.rm = T), by=.(person_id,group_identifier)])
+suppressWarnings(gop_gybr3<-gop_gybr3[,group_end_date:=max(group_end_date, na.rm = T), by=.(person_id,group_identifier)])
 
 # -case 2: check if group overlap and in case we'll bind them
 gop_gybr3<-gop_gybr3[order(person_id, group_identifier),]
 gop_gybr3<-gop_gybr3[,group_end_prev:=shift(group_end_date),by=.(person_id)]
 gop_gybr3<-gop_gybr3[group_end_prev==group_end_date, group_end_prev:=NA]
 gop_gybr3<-gop_gybr3[,overlap:=(group_end_prev>=group_start_date)*1][is.na(overlap),overlap:=0]
-gop_gybr3<-gop_gybr3[,overlap:=max(overlap),by=.(person_id)]
+suppressWarnings(gop_gybr3<-gop_gybr3[,overlap:=max(overlap),by=.(person_id)])
 gop_gybr3<-gop_gybr3[overlap==1, group_identifier:=min(group_identifier),by=.(person_id)]
-gop_gybr3<-gop_gybr3[,group_start_date:=min(group_start_date, na.rm = T), by=.(person_id,group_identifier)]
-gop_gybr3<-gop_gybr3[,group_end_date:=max(group_end_date, na.rm = T), by=.(person_id,group_identifier)]
+suppressWarnings(gop_gybr3<-gop_gybr3[,group_start_date:=min(group_start_date, na.rm = T), by=.(person_id,group_identifier)])
+suppressWarnings(gop_gybr3<-gop_gybr3[,group_end_date:=max(group_end_date, na.rm = T), by=.(person_id,group_identifier)])
 
 gop_gybr3<-gop_gybr3[,-c("group_end_prev","n_rep","n_rep_max","overlap")]
 gop_gybr3<-unique(gop_gybr3) [,highest_quality:="C_Blue"]

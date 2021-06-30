@@ -45,11 +45,16 @@ if (dim(D3_Stream_PROMPTS)[1]!=0){
   
   table(D3_study_population_pregnancy1$pregnancy_with_dates_out_of_range) # 43 deleted
   
-  # D3_study_population_pregnancy1<- D3_study_population_pregnancy1[is.na(pregnancy_end_date), no_end_of_pregnancy:=1][is.na(no_end_of_pregnancy),no_end_of_pregnancy:=0]
+  ## NEW EXCLUSION criteria: end after 01-03-2020
+  D3_study_population_pregnancy1<-D3_study_population_pregnancy1[pregnancy_end_date<as.Date("2020-03-01"),pregnancy_befor_pandemic:=1][is.na(pregnancy_befor_pandemic), pregnancy_befor_pandemic:=0]
+  
+  table(D3_study_population_pregnancy1$pregnancy_befor_pandemic) # 
+  
+    # D3_study_population_pregnancy1<- D3_study_population_pregnancy1[is.na(pregnancy_end_date), no_end_of_pregnancy:=1][is.na(no_end_of_pregnancy),no_end_of_pregnancy:=0]
   # table(D3_study_population_pregnancy1$no_end_of_pregnancy) #74 deleted
   
-  D3_excluded_pregnancies_from_prompts_1 <-D3_study_population_pregnancy1[pregnancy_with_dates_out_of_range==1,] #| no_end_of_pregnancy==1
-  D3_study_population_pregnancy2 <-D3_study_population_pregnancy1[pregnancy_with_dates_out_of_range==0,][,-c("pregnancy_with_dates_out_of_range")] #& no_end_of_pregnancy==0
+  D3_excluded_pregnancies_from_prompts_1 <-D3_study_population_pregnancy1[pregnancy_with_dates_out_of_range==1 | pregnancy_befor_pandemic==1,] #| no_end_of_pregnancy==1
+  D3_study_population_pregnancy2 <-D3_study_population_pregnancy1[pregnancy_with_dates_out_of_range==0 & pregnancy_befor_pandemic==0,][,-c("pregnancy_with_dates_out_of_range","pregnancy_befor_pandemic")] #& no_end_of_pregnancy==0
   
   
   
@@ -88,18 +93,22 @@ if (dim(D3_Stream_PROMPTS)[1]!=0){
   D3_study_population_pregnancy3 <-D3_study_population_pregnancy3[pregnancy_end_date>=entry_spell_category & pregnancy_end_date<=exit_spell_category,pregnancy_end_in_spells:=0, by="person_id"][is.na(pregnancy_end_in_spells),pregnancy_end_in_spells:=1]
   table(D3_study_population_pregnancy3$pregnancy_end_in_spells) #573228 rows deleted
   
+  ## NEW EXCLUSION: less than 1y lookback
+  D3_study_population_pregnancy3<-D3_study_population_pregnancy3[pregnancy_start_date - entry_spell_category<365, no_enough_lb:=1][is.na(no_enough_lb), no_enough_lb:=0]
+  
+  table(D3_study_population_pregnancy3$no_enough_lb) # 
   
   
   
   # pregancies to be excluded:
-  D3_excluded_pregnancies_from_prompts_2 <- D3_study_population_pregnancy3[no_linked_to_person==1 | person_not_female==1 | person_not_in_fertile_age==1 | pregnancy_start_in_spells==1 | pregnancy_end_in_spells==1,]  # to further explore exclusion
+  D3_excluded_pregnancies_from_prompts_2 <- D3_study_population_pregnancy3[no_linked_to_person==1 | person_not_female==1 | person_not_in_fertile_age==1 | pregnancy_start_in_spells==1 | pregnancy_end_in_spells==1 | no_enough_lb==1,]  # to further explore exclusion
   
   D3_excluded_pregnancies_from_PROMPT<-rbind(D3_excluded_pregnancies_from_prompts_1,D3_excluded_pregnancies_from_prompts_2,fill=TRUE)[,-c( "sex_at_instance_creation","date_of_birth","date_death", "age_at_pregnancy_start","op_meaning","num_spell","entry_spell_category","exit_spell_category")]
   save(D3_excluded_pregnancies_from_PROMPT, file=paste0(dirtemp,"D3_excluded_pregnancies_from_PROMPT.RData")) # 663830
   
   
   # pregnancies to be included in next steps
-  D3_study_population_pregnancy_from_prompts<-D3_study_population_pregnancy3[no_linked_to_person==0 & person_not_female==0 & person_not_in_fertile_age==0 & pregnancy_start_in_spells==0 & pregnancy_end_in_spells==0,] [,-c("no_linked_to_person","person_not_female","person_not_in_fertile_age","pregnancy_start_in_spells","pregnancy_end_in_spells")] # 554767 against 429699
+  D3_study_population_pregnancy_from_prompts<-D3_study_population_pregnancy3[no_linked_to_person==0 & person_not_female==0 & person_not_in_fertile_age==0 & pregnancy_start_in_spells==0 & pregnancy_end_in_spells==0 & no_enough_lb==0,] [,-c("no_linked_to_person","person_not_female","person_not_in_fertile_age","pregnancy_start_in_spells","pregnancy_end_in_spells","no_enough_lb")] # 554767 against 429699
   
   
   D3_Stream_PROMPTS_check<-D3_study_population_pregnancy_from_prompts[,.(pregnancy_id,person_id,record_date,pregnancy_start_date,pregnancy_end_date,meaning_start_date,meaning_end_date,type_of_pregnancy_end,imputed_start_of_pregnancy,meaning, origin,survey_id,PROMPT)]#

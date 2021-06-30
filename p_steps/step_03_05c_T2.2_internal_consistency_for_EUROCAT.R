@@ -15,7 +15,7 @@ if (dim(D3_Stream_EUROCAT)[1]!=0){
   # linkare D3_study_population_pregnancy with PERSONS, verify if person_id, survey_id e survey_date are unique key.
   # create var link_to_person:=1 if it links with PERSONS, 
   
-  #load PERSON, output_spells_ctegory and D3_study_population_pregnancy_intermediate_from_prompt
+  #load PERSON, output_spells_ctegory and D3_study_population_pregnancy_intermediate_from_conceptset
   D3_PERSONS <- data.table()
   files<-sub('\\.RData$', '', list.files(dirtemp))
   for (i in 1:length(files)) {
@@ -30,7 +30,7 @@ if (dim(D3_Stream_EUROCAT)[1]!=0){
   load(paste0(dirtemp,"output_spells_category.RData"))
   
   
-  ## define quality vars in D3_study_population_pregnancy_intermediate_from_prompt
+  ## define quality vars in D3_study_population_pregnancy_intermediate_from_conceptset
   data_min<-as.Date(as.character(unlist(date_range[[thisdatasource]][["EUROCAT"]][["since_when_data_complete"]])), date_format)
   data_max<-as.Date(as.character(unlist(date_range[[thisdatasource]][["EUROCAT"]][["up_to_when_data_complete"]])), date_format)
   
@@ -43,12 +43,17 @@ if (dim(D3_Stream_EUROCAT)[1]!=0){
   D3_study_population_pregnancy1<- D3_Stream_EUROCAT[pregnancy_end_date<data_min | record_date>data_max, pregnancy_with_dates_out_of_range:=1][is.na(pregnancy_with_dates_out_of_range),pregnancy_with_dates_out_of_range:=0]
   table(D3_study_population_pregnancy1$pregnancy_with_dates_out_of_range) # 4 deleted
   
+  ## NEW EXCLUSION criteria: end after 01-03-2020
+  D3_study_population_pregnancy1<-D3_study_population_pregnancy1[pregnancy_end_date<as.Date("2020-03-01"),pregnancy_befor_pandemic:=1][is.na(pregnancy_befor_pandemic), pregnancy_befor_pandemic:=0]
+  
+  table(D3_study_population_pregnancy1$pregnancy_befor_pandemic) # 
+  
   # D3_study_population_pregnancy1<- D3_study_population_pregnancy1[is.na(pregnancy_end_date), no_end_of_pregnancy:=1][is.na(no_end_of_pregnancy),no_end_of_pregnancy:=0]
   # table(D3_study_population_pregnancy1$no_end_of_pregnancy) #49812 deleted
   
   
-  D3_excluded_pregnancies_from_EUROCAT_1 <-D3_study_population_pregnancy1[pregnancy_with_dates_out_of_range==1,]# | no_end_of_pregnancy==1
-  D3_study_population_pregnancy1 <-D3_study_population_pregnancy1[pregnancy_with_dates_out_of_range==0 ,][,-c("pregnancy_with_dates_out_of_range")]#& no_end_of_pregnancy==0
+  D3_excluded_pregnancies_from_EUROCAT_1 <-D3_study_population_pregnancy1[pregnancy_with_dates_out_of_range==1 | pregnancy_befor_pandemic==1,] #| no_end_of_pregnancy==1
+  D3_study_population_pregnancy2 <-D3_study_population_pregnancy1[pregnancy_with_dates_out_of_range==0 & pregnancy_befor_pandemic==0,][,-c("pregnancy_with_dates_out_of_range","pregnancy_befor_pandemic")] #& no_end_of_pregnancy==0
   
   
   
@@ -83,14 +88,22 @@ if (dim(D3_Stream_EUROCAT)[1]!=0){
   table(D3_study_population_pregnancy3$pregnancy_end_in_spells) #750892 rows deleted
   
   
+  ## NEW EXCLUSION: less than 1y lookback
+  D3_study_population_pregnancy3<-D3_study_population_pregnancy3[pregnancy_start_date - entry_spell_category<365, no_enough_lb:=1][is.na(no_enough_lb), no_enough_lb:=0]
+  
+  table(D3_study_population_pregnancy3$no_enough_lb) # 
+  
+  
+  
   # pregancies to be excluded:
-  D3_excluded_pregnancies_from_EUROCAT_2 <- D3_study_population_pregnancy3[no_linked_to_person==1 | person_not_female==1 | person_not_in_fertile_age==1 | pregnancy_start_in_spells==1 | pregnancy_end_in_spells==1,]  # to further explore exclusion
+  D3_excluded_pregnancies_from_EUROCAT_2 <- D3_study_population_pregnancy3[no_linked_to_person==1 | person_not_female==1 | person_not_in_fertile_age==1 | pregnancy_start_in_spells==1 | pregnancy_end_in_spells==1 | no_enough_lb==1,]  # to further explore exclusion
   
   D3_excluded_pregnancies_from_EUROCAT<-rbind(D3_excluded_pregnancies_from_EUROCAT_1,D3_excluded_pregnancies_from_EUROCAT_2,fill=TRUE)[,-c( "sex_at_instance_creation","date_of_birth","date_death", "age_at_pregnancy_start","op_meaning","num_spell","entry_spell_category","exit_spell_category")]
   save(D3_excluded_pregnancies_from_EUROCAT, file=paste0(dirtemp,"D3_excluded_pregnancies_from_EUROCAT.RData")) # 663830
   
+  
   # pregnancies to be included in next steps
-  D3_study_population_pregnancy_from_EUROCAT<-D3_study_population_pregnancy3[no_linked_to_person==0 & person_not_female==0 & person_not_in_fertile_age==0 & pregnancy_start_in_spells==0 & pregnancy_end_in_spells==0,] [,-c("no_linked_to_person","person_not_female","person_not_in_fertile_age","pregnancy_start_in_spells","pregnancy_end_in_spells")] # 554767 against 429699
+  D3_study_population_pregnancy_from_EUROCAT<-D3_study_population_pregnancy3[no_linked_to_person==0 & person_not_female==0 & person_not_in_fertile_age==0 & pregnancy_start_in_spells==0 & pregnancy_end_in_spells==0 & no_enough_lb==0,] [,-c("no_linked_to_person","person_not_female","person_not_in_fertile_age","pregnancy_start_in_spells","pregnancy_end_in_spells","no_enough_lb")] # 554767 against 429699
   
   
   
