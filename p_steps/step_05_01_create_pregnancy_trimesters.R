@@ -51,42 +51,30 @@ D3_pregnancy_outcomes <- D3_pregnancy_outcomes[pregnancy_end_date > trim2_end,
 
 
 
+
 # Melting 
-D3_pregnancy_trimester_melt = melt(D3_pregnancy_outcomes, 
-                                   id.vars = c("person_id", "pers_group_id", 
-                                                "survey_id", "highest_quality", 
-                                                "PROMPT", "pregnancy_start_date",
-                                                "pregnancy_end_date", "type_of_pregnancy_end",
-                                               "trim1_start", "trim2_start", "trim3_start"),
-                                   measure.vars = c("trim1_end", "trim2_end", "trim3_end"))
+D3_pregnancy_trimester = melt(D3_pregnancy_outcomes, 
+                              id.vars = c("person_id", "pers_group_id", 
+                                          "survey_id", "highest_quality", 
+                                          "PROMPT", "pregnancy_start_date",
+                                          "pregnancy_end_date", "type_of_pregnancy_end"),
+                              measure.vars = list(c("trim1_start", "trim2_start", "trim3_start"), 
+                                               c("trim1_end", "trim2_end", "trim3_end")))
+setnames(D3_pregnancy_trimester, 
+         c("variable", "value1", "value2"),
+         c("trim", "start_trim", "end_trim"))
 
+D3_pregnancy_trimester <- D3_pregnancy_trimester[!is.na(start_trim)]
 
+# keeping only the trimesters in wich start_trim > 1 march 2020
+D3_pregnancy_trimester <- D3_pregnancy_trimester[start_trim > as.Date("2020-03-01"),
+                                                 prior_to_COVID:=1][is.na(prior_to_COVID), prior_to_COVID:=0]
 
-D3_pregnancy_trimester <- D3_pregnancy_trimester_melt[variable == "trim1_end",
-                                                      `:=` (trimester = 1, 
-                                                            trimester_start =  trim1_start,
-                                                            trimester_end =  value)]
+# adding age 
+load(paste0(dirtemp, "D3_PERSONS.RData"))
+D3_pregnancy_trimester <- merge(D3_pregnancy_trimester, D3_PERSONS[,.(person_id, date_of_birth)], 
+                                all.x = T, by = "person_id")
 
-D3_pregnancy_trimester <- D3_pregnancy_trimester[variable == "trim2_end",
-                                                 `:=` (trimester = 2, 
-                                                       trimester_start =  trim2_start,
-                                                       trimester_end =  value)]
+D3_pregnancy_trimester <- D3_pregnancy_trimester[, age:= as.integer((pregnancy_start_date - date_of_birth) / 365)]
+D3_pregnancy_trimester <- D3_pregnancy_trimester[, -c("date_of_birth")]
 
-D3_pregnancy_trimester <- D3_pregnancy_trimester[variable == "trim3_end",
-                                                 `:=` (trimester = 3, 
-                                                       trimester_start =  trim3_start,
-                                                       trimester_end =  value)]
-
-D3_pregnancy_trimester <- D3_pregnancy_trimester[, -c("trim1_start", "trim2_start", 
-                                                      "trim3_start", "variable", "value")]
-
-
-
-# set obs 10
-# gen id = _n
-# gen data_i_1 = mdy(1,1,2020)
-# gen data_f_1 = mdy(1,31,2020)
-# gen data_i_2 = mdy(2,1,2020)
-# gen data_f_2 = mdy(2,28,2020)
-# reshape long data_i_ data_f_,i(id) j(trimestre)
-# format data* %td
