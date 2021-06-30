@@ -1,6 +1,6 @@
 
 if (this_datasource_has_itemsets_stream){
-
+  
   ## import D3_Stream_ITEMSETS
   load(paste0(dirtemp,"D3_Stream_ITEMSETS.RData"))
   
@@ -29,9 +29,9 @@ if (this_datasource_has_itemsets_stream){
     #print(tab)
     data_min<-as.Date(as.character(unlist(date_range[[thisdatasource]][[tab]][["since_when_data_complete"]])), date_format)
     data_max<-as.Date(as.character(unlist(date_range[[thisdatasource]][[tab]][["up_to_when_data_complete"]])), date_format)
-  
+    
     temp<-temp2[origin==tab,] 
-  
+    
     D3_study_population_pregnancy1<- rbind(D3_study_population_pregnancy1,temp[record_date<data_min | record_date>data_max, pregnancy_with_dates_out_of_range:=1][is.na(pregnancy_with_dates_out_of_range),pregnancy_with_dates_out_of_range:=0])
   }
   
@@ -82,7 +82,7 @@ if (this_datasource_has_itemsets_stream){
   #not in OBS_PER at some point during of pregnancy
   D3_study_population_pregnancy3 <-D3_study_population_pregnancy3[(pregnancy_ongoing_date>=entry_spell_category & pregnancy_start_in_spells<=exit_spell_category) | is.na(pregnancy_ongoing_date),pregnancy_ongoing_in_spells:=0, by="person_id"][is.na(pregnancy_ongoing_in_spells),pregnancy_ongoing_in_spells:=1]
   table(D3_study_population_pregnancy3$pregnancy_ongoing_in_spells) #750892 rows deleted
-
+  
   ## NEW EXCLUSION: less than 1y lookback
   D3_study_population_pregnancy3<-D3_study_population_pregnancy3[pregnancy_start_date - entry_spell_category<365, no_enough_lb:=1][is.na(no_enough_lb), no_enough_lb:=0]
   
@@ -92,15 +92,15 @@ if (this_datasource_has_itemsets_stream){
   if("survey_id" %notin%names(D3_study_population_pregnancy3)) D3_study_population_pregnancy3[,survey_id:=""]
   
   # pregancies to be excluded:
-  D3_excluded_pregnancies_from_ITEMSETS_2 <- D3_study_population_pregnancy3[no_linked_to_person==1 | person_not_female==1 | person_not_in_fertile_age==1 | pregnancy_start_in_spells==1 | pregnancy_end_in_spells==1 | no_enough_lb==1,]  #| pregnancy_end_in_spells==1 # to further explore exclusion
+  D3_excluded_pregnancies_from_ITEMSETS_2 <- D3_study_population_pregnancy3[no_linked_to_person==1 | person_not_female==1 | person_not_in_fertile_age==1 | pregnancy_start_in_spells==1 | pregnancy_ongoing_in_spells==1 | no_enough_lb==1,]  #| pregnancy_end_in_spells==1 # to further explore exclusion
   
   D3_excluded_pregnancies_from_ITEMSETS<-rbind(D3_excluded_pregnancies_from_ITEMSETS_1,D3_excluded_pregnancies_from_ITEMSETS_2,fill=TRUE)[,-c( "sex_at_instance_creation","date_of_birth","date_death", "age_at_pregnancy_start","op_meaning","num_spell","entry_spell_category","exit_spell_category")] #
   save(D3_excluded_pregnancies_from_ITEMSETS, file=paste0(dirtemp,"D3_excluded_pregnancies_from_ITEMSETS.RData")) # 663830
   
   # pregnancies to be included in next steps
-  D3_study_population_pregnancy_from_ITEMSETS<--D3_study_population_pregnancy3[no_linked_to_person==0 & person_not_female==0 & person_not_in_fertile_age==0 & pregnancy_start_in_spells==0 & pregnancy_end_in_spells==0 & no_enough_lb==0,] [,-c("no_linked_to_person","person_not_female","person_not_in_fertile_age","pregnancy_start_in_spells","pregnancy_end_in_spells","no_enough_lb")] # & pregnancy_end_in_spells==0# 554767 against 429699
+  D3_study_population_pregnancy_from_ITEMSETS<-D3_study_population_pregnancy3[no_linked_to_person==0 & person_not_female==0 & person_not_in_fertile_age==0 & pregnancy_start_in_spells==0 & pregnancy_ongoing_in_spells==0 & no_enough_lb==0,] [,-c("no_linked_to_person","person_not_female","person_not_in_fertile_age","pregnancy_start_in_spells","pregnancy_ongoing_in_spells","no_enough_lb")] # & pregnancy_end_in_spells==0# 554767 against 429699
   
-
+  
   D3_Stream_ITEMSETS_check<-D3_study_population_pregnancy_from_ITEMSETS[,.(pregnancy_id,person_id,record_date,pregnancy_start_date,pregnancy_ongoing_date,pregnancy_end_date,meaning_start_date,meaning_ongoing_date,meaning_end_date,type_of_pregnancy_end,imputed_end_of_pregnancy,imputed_start_of_pregnancy,meaning,survey_id,ITEMSETS)]#
   save(D3_Stream_ITEMSETS_check, file=paste0(dirtemp,"D3_Stream_ITEMSETS_check.RData"))
   
