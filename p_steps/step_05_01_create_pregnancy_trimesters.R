@@ -82,11 +82,7 @@ D3_pregnancy_trimester <- D3_pregnancy_trimester[age>=12 & age<=34, age_category
 D3_pregnancy_trimester <- D3_pregnancy_trimester[age>=35 & age<=55, age_category := 2]
 D3_pregnancy_trimester[is.na(age_category)]  
 
-# merging covid registry
-
-# RETRIEVE FROM SURVEY_ID ALL prompt datasets corresponding to "covid_registry" 
-
-# collect and rbind from all files whose name starts with 'SURVEY_ID'
+# creating covid registry 
 SURVEY_ID_COVID <- data.table()
 files<-sub('\\.csv$', '', list.files(dirinput))
 for (i in 1:length(files)) {
@@ -95,19 +91,20 @@ for (i in 1:length(files)) {
   }
 }
 
+
 covid_registry <- SURVEY_ID_COVID[,date:=ymd(survey_date)]
-covid_registry <- covid_registry[,-"survey_date"]
+covid_registry <- covid_registry[,.(person_id, date)]
+
+# merging covid in trimesters
+
+MFC_covid_in_trim <- MergeFilterAndCollapse( listdatasetL = list(covid_registry),
+                                             datasetS = D3_pregnancy_trimester, 
+                                             key = c("person_id"), 
+                                             condition = "date >= start_trim & date <= end_trim",
+                                             strata=c("pers_group_id", "trim"),
+                                             summarystat = list(list(c("exist"), "date" , "covid_in_trim")))
 
 
-
-# SURVEY_ID_COVID <- data.table()
-# files<-sub('\\.csv$', '', list.files(dirinput))
-# for (i in 1:length(files)) {
-#   if (str_detect(files[i],"^SURVEY_ID")) {
-#     SURVEY_ID_COVID <-rbind(SURVEY_ID_COVID,fread(paste0(dirinput,files[i],".csv"), colClasses = list( character="person_id")))
-#   }
-# }
-# table(SURVEY_ID_COVID[, survey_meaning])
 
 
 
