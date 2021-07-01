@@ -68,7 +68,7 @@ D3_pregnancy_trimester <- D3_pregnancy_trimester[!is.na(start_trim)]
 
 # keeping only the trimesters in wich start_trim > 1 march 2020
 D3_pregnancy_trimester <- D3_pregnancy_trimester[start_trim > as.Date("2020-03-01"),
-                                                 prior_to_COVID:=1][is.na(prior_to_COVID), prior_to_COVID:=0]
+                                                 prior_to_COVID:=0][is.na(prior_to_COVID), prior_to_COVID:=1]
 
 # adding age 
 load(paste0(dirtemp, "D3_PERSONS.RData"))
@@ -78,3 +78,6 @@ D3_pregnancy_trimester <- merge(D3_pregnancy_trimester, D3_PERSONS[,.(person_id,
 D3_pregnancy_trimester <- D3_pregnancy_trimester[, age:= as.integer((pregnancy_start_date - date_of_birth) / 365)]
 D3_pregnancy_trimester <- D3_pregnancy_trimester[, -c("date_of_birth")]
 
+D3_pregnancy_trimester <- D3_pregnancy_trimester[age>=12 & age<=34, age_category := 1]
+D3_pregnancy_trimester <- D3_pregnancy_trimester[age>=35 & age<=55, age_category := 2]
+D3_pregnancy_trimester[is.na(age_category)]                                                                                      
