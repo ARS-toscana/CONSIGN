@@ -7,7 +7,7 @@ concept_sets_of_our_study_procedure <- c("gestational_diabetes","fetal_nuchal_tr
 
 #concept_sets_of_our_study_medications <- c("ANTIHYP","ANTICOA","ANTIVIR","ANTIBAC","ANTIMB","IMMUNE","VAC","ANALG","PSYCHOL","PSYCHOA","DIAB")
 
-concept_sets_of_our_study_medications <- c("ANTIHYP", "ANTICOA", "ANTIVIR", "ANTIMYC" , "ANTIMB", "ANTIBAC", "IMMUNE", "VAC", "ANALG", "PSYCHOL", "PSYCHOA", "DIAB", "CORTICO", "IMMUNOSTI", "IMMUNOSUP", "ANTINFLAMM", "NASAL", "RESPIR", "COLD")
+concept_sets_of_our_study_medications <- c("C0_2_3_4_7_8_9","B01","J05","J01","J02","J04","J06","J07","N02", "N05","N06","A10","H02","L03","L04","M01","R01","R03","R05")
 
 concept_set_our_study_pre <- c("INSULIN","FGR_narrow","FGR_possible","GESTDIAB_narrow","GESTDIAB_possible","MAJORCA_narrow","MAJORCA_possible","MATERNALDEATH_narrow","MATERNALDEATH_possible","MICROCEPHALY_narrow","MICROCEPHALY_possible","PREECLAMP_narrow","PREECLAMP_possible","PRETERMBIRTH_narrow","PRETERMBIRTH_possible","SPONTABO_narrow","SPONTABO_possible","STILLBIRTH_narrow", "STILLBIRTH_possible", "TOPFA_narrow","TOPFA_possible")
 
@@ -58,25 +58,25 @@ concept_set_codes_our_study<-vector(mode="list")
 # MEDICATIONS
 ############################
 
-concept_set_codes_our_study[["ANTIHYP"]][["ATC"]] <- c("C02", "C03", "C04", "C07", "C08", "C09")
-concept_set_codes_our_study[["ANTICOA"]][["ATC"]] <- c("B01")
-concept_set_codes_our_study[["ANTIVIR"]][["ATC"]] <- c("J05")
-concept_set_codes_our_study[["ANTIBAC"]][["ATC"]] <- c("J01")
-concept_set_codes_our_study[["ANTIMYC"]][["ATC"]] <- c("J02")
-concept_set_codes_our_study[["ANTIMB"]][["ATC"]] <- c("J04")
-concept_set_codes_our_study[["IMMUNE"]][["ATC"]] <- c("J06")
-concept_set_codes_our_study[["VAC"]][["ATC"]] <- c("J07")
-concept_set_codes_our_study[["ANALG"]][["ATC"]] <- c("N02")
-concept_set_codes_our_study[["PSYCHOL"]][["ATC"]] <- c("N05")
-concept_set_codes_our_study[["PSYCHOA"]][["ATC"]] <- c("N06")
-concept_set_codes_our_study[["DIAB"]][["ATC"]] <- c("A10")
-concept_set_codes_our_study[["CORTICO"]][["ATC"]] <- c("H02")
-concept_set_codes_our_study[["IMMUNOSTI"]][["ATC"]] <- c("L03")
-concept_set_codes_our_study[["IMMUNOSUP"]][["ATC"]] <- c("L04")
-concept_set_codes_our_study[["ANTINFLAMM"]][["ATC"]] <- c("M01")
-concept_set_codes_our_study[["NASAL"]][["ATC"]] <- c("R01")
-concept_set_codes_our_study[["RESPIR"]][["ATC"]] <- c("R03")
-concept_set_codes_our_study[["COLD"]][["ATC"]] <- c("R05")
+concept_set_codes_our_study[["C0_2_3_4_7_8_9"]][["ATC"]] <- c("C02", "C03", "C04", "C07", "C08", "C09")
+concept_set_codes_our_study[["B01"]][["ATC"]] <- c("B01")
+concept_set_codes_our_study[["J05"]][["ATC"]] <- c("J05")
+concept_set_codes_our_study[["J01"]][["ATC"]] <- c("J01")
+concept_set_codes_our_study[["J02"]][["ATC"]] <- c("J02")
+concept_set_codes_our_study[["J04"]][["ATC"]] <- c("J04")
+concept_set_codes_our_study[["J06"]][["ATC"]] <- c("J06")
+concept_set_codes_our_study[["J07"]][["ATC"]] <- c("J07")
+concept_set_codes_our_study[["N02"]][["ATC"]] <- c("N02")
+concept_set_codes_our_study[["N05"]][["ATC"]] <- c("N05")
+concept_set_codes_our_study[["N06"]][["ATC"]] <- c("N06")
+concept_set_codes_our_study[["A10"]][["ATC"]] <- c("A10")
+concept_set_codes_our_study[["H02"]][["ATC"]] <- c("H02")
+concept_set_codes_our_study[["L03"]][["ATC"]] <- c("L03")
+concept_set_codes_our_study[["L04"]][["ATC"]] <- c("L04")
+concept_set_codes_our_study[["M01"]][["ATC"]] <- c("M01")
+concept_set_codes_our_study[["R01"]][["ATC"]] <- c("R01")
+concept_set_codes_our_study[["R03"]][["ATC"]] <- c("R03")
+concept_set_codes_our_study[["R05"]][["ATC"]] <- c("R05")
 
 
 
