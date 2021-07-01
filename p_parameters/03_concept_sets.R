@@ -5,7 +5,9 @@ concept_sets_of_our_study_eve <- c("Gestation_less24","Gestation_24","Gestation_
 
 concept_sets_of_our_study_procedure <- c("gestational_diabetes","fetal_nuchal_translucency", "amniocentesis","Chorionic_Villus_Sampling","others")
 
-concept_sets_of_our_study_medications <- c("ANTIHYP","ANTICOA","ANTIVIR","ANTIBAC","ANTIMB","IMMUNE","VAC","ANALG","PSYCHOL","PSYCHOA","DIAB")
+#concept_sets_of_our_study_medications <- c("ANTIHYP","ANTICOA","ANTIVIR","ANTIBAC","ANTIMB","IMMUNE","VAC","ANALG","PSYCHOL","PSYCHOA","DIAB")
+
+concept_sets_of_our_study_medications <- c("ANTIHYP", "ANTICOA", "ANTIVIR", "ANTIMYC" , "ANTIMB", "ANTIBAC", "IMMUNE", "VAC", "ANALG", "PSYCHOL", "PSYCHOA", "DIAB", "CORTICO", "IMMUNOSTI", "IMMUNOSUP", "ANTINFLAMM", "NASAL", "RESPIR", "COLD")
 
 concept_set_our_study_pre <- c("INSULIN","FGR_narrow","FGR_possible","GESTDIAB_narrow","GESTDIAB_possible","MAJORCA_narrow","MAJORCA_possible","MATERNALDEATH_narrow","MATERNALDEATH_possible","MICROCEPHALY_narrow","MICROCEPHALY_possible","PREECLAMP_narrow","PREECLAMP_possible","PRETERMBIRTH_narrow","PRETERMBIRTH_possible","SPONTABO_narrow","SPONTABO_possible","STILLBIRTH_narrow", "STILLBIRTH_possible", "TOPFA_narrow","TOPFA_possible")
 
