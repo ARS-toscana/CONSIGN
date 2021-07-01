@@ -80,4 +80,35 @@ D3_pregnancy_trimester <- D3_pregnancy_trimester[, -c("date_of_birth")]
 
 D3_pregnancy_trimester <- D3_pregnancy_trimester[age>=12 & age<=34, age_category := 1]
 D3_pregnancy_trimester <- D3_pregnancy_trimester[age>=35 & age<=55, age_category := 2]
-D3_pregnancy_trimester[is.na(age_category)]                                                                                      
+D3_pregnancy_trimester[is.na(age_category)]  
+
+# merging covid registry
+
+# RETRIEVE FROM SURVEY_ID ALL prompt datasets corresponding to "covid_registry" 
+
+# collect and rbind from all files whose name starts with 'SURVEY_ID'
+SURVEY_ID_COVID <- data.table()
+files<-sub('\\.csv$', '', list.files(dirinput))
+for (i in 1:length(files)) {
+  if (str_detect(files[i],"^SURVEY_ID")) {
+    SURVEY_ID_COVID <-rbind(SURVEY_ID_COVID,fread(paste0(dirinput,files[i],".csv"), colClasses = list( character="person_id"))[survey_meaning =="covid_registry",])
+  }
+}
+
+covid_registry <- SURVEY_ID_COVID[,date:=ymd(survey_date)]
+covid_registry <- covid_registry[,-"survey_date"]
+
+
+
+# SURVEY_ID_COVID <- data.table()
+# files<-sub('\\.csv$', '', list.files(dirinput))
+# for (i in 1:length(files)) {
+#   if (str_detect(files[i],"^SURVEY_ID")) {
+#     SURVEY_ID_COVID <-rbind(SURVEY_ID_COVID,fread(paste0(dirinput,files[i],".csv"), colClasses = list( character="person_id")))
+#   }
+# }
+# table(SURVEY_ID_COVID[, survey_meaning])
+
+
+
+save(D3_pregnancy_trimester, file=paste0(dirtemp,"D3_pregnancy_trimester.RData"))
