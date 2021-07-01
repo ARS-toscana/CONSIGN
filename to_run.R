@@ -60,5 +60,6 @@ source(paste0(thisdir,"/p_steps/step_03_06_2_T2.3_merge_stream_of_same_person.R"
 
 # 05 CREATE PREGNACIES TRIMESTERS
 source(paste0(thisdir,"/p_steps/step_05_01_create_pregnancy_trimesters.R")) 
-
+source(paste0(thisdir,"/p_steps/step_05_02_create_medication_in_pregnancy.R"))
+source(paste0(thisdir,"/p_steps/step_05_03... .R"))
 
