@@ -99,7 +99,7 @@ covid_registry <- SURVEY_ID_COVID[,date:=ymd(survey_date)]
 covid_registry <- covid_registry[,-"survey_date"]
 
 
-# 
+
 # SURVEY_ID_COVID <- data.table()
 # files<-sub('\\.csv$', '', list.files(dirinput))
 # for (i in 1:length(files)) {
@@ -111,19 +111,4 @@ covid_registry <- covid_registry[,-"survey_date"]
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+save(D3_pregnancy_trimester, file=paste0(dirtemp,"D3_pregnancy_trimester.RData"))
