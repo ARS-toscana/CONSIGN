@@ -10,11 +10,13 @@ files<-sub('\\.csv$', '', list.files(dirinput))
 for (i in 1:length(files)) {
   if (str_detect(files[i],"^EVENTS")) { ConcePTION_CDM_tables[["Diagnosis"]][[(length(ConcePTION_CDM_tables[["Diagnosis"]]) + 1)]]<-files[i]
   } else if (str_detect(files[i],"^MEDICINES")){ ConcePTION_CDM_tables[["Medicines"]][[(length(ConcePTION_CDM_tables[["Medicines"]]) + 1)]]<-files[i] 
-  } else if (str_detect(files[i],"^PROCEDURES")) { ConcePTION_CDM_tables[["Procedures"]][[(length(ConcePTION_CDM_tables[["Procedures"]]) + 1)]]<-files[i] }
+  } else if (str_detect(files[i],"^PROCEDURES")) { ConcePTION_CDM_tables[["Procedures"]][[(length(ConcePTION_CDM_tables[["Procedures"]]) + 1)]]<-files[i] 
+  } else if (str_detect(files[i],"^VACCINES")) { ConcePTION_CDM_tables[["VaccineATC"]][[(length(ConcePTION_CDM_tables[["VaccineATC"]]) + 1)]]<-files[i] }
 }
-for (i in 1:length(files)) {
-  if (str_detect(files[i],"^VACCINES"))  ConcePTION_CDM_tables[["VaccineATC"]][[(length(ConcePTION_CDM_tables[["VaccineATC"]]) + 1)]]<-files[i]
-}
+
+# for (i in 1:length(files)) {
+#   if (str_detect(files[i],"^VACCINES"))  ConcePTION_CDM_tables[["VaccineATC"]][[(length(ConcePTION_CDM_tables[["VaccineATC"]]) + 1)]]<-files[i]
+# }
 
 #define tables for createconceptset
 ConcePTION_CDM_EAV_tables <- vector(mode="list")
