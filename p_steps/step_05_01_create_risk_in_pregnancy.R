@@ -20,7 +20,11 @@ D3_pregnancy_outcomes<-D3_gop[n==1, .(person_id,
 # create the risk
 concept_sets_of_our_study_risk <- list("DP_CVD", "DP_COVSICKLE", "DP_COVCOPD", 
                                        "DP_COVDIAB", "DP_COVOBES", "DP_COVCKD", 
-                                       "DP_COVHIV", "IMMUNOSUPPR", "DP_COVCANCER")
+                                       "DP_COVHIV", "IMMUNOSUPPR", "DP_COVCANCER",
+                                       "COVSICKLE", "COVCOPD", "COVDIAB", 
+                                       "COVOBES", "COVCKD", "COVHIV", "COVCANCER", 
+                                       "HF_narrow", "HF_possible", "MYOCARD_narrow",
+                                       "MYOCARD_possible", "CAD_narrow", "CAD_possible")
 
 #load concepts datasets
 for (conceptvar in concept_sets_of_our_study_risk){
@@ -35,7 +39,7 @@ for (concept in concept_sets_of_our_study_risk) {
                                   datasetS = D3_pregnancy_outcomes, 
                                   typemerge = 2,
                                   key = c("person_id"), 
-                                  condition = "date >= (pregnancy_start_date - 356) & date <= pregnancy_start_date",
+                                  condition = "date >= (pregnancy_start_date - 365) & date <= pregnancy_start_date",
                                   strata=c("pers_group_id"),
                                   summarystat = list(list(c("exist"), "date" , concept)))
   
@@ -45,32 +49,30 @@ for (concept in concept_sets_of_our_study_risk) {
                                 all.x = T)
   setnames(D3_risk_in_pregnancy, concept, "risk_to_be_renamed")
   D3_risk_in_pregnancy <- D3_risk_in_pregnancy[is.na(risk_to_be_renamed), risk_to_be_renamed := 0]
+  #create "at_risk" = 1 if at least one risk is = 1
+  D3_risk_in_pregnancy <- D3_risk_in_pregnancy[risk_to_be_renamed == 1, at_risk := 1]
   setnames(D3_risk_in_pregnancy, "risk_to_be_renamed", concept)
 } 
+D3_risk_in_pregnancy <- D3_risk_in_pregnancy[is.na(at_risk), at_risk :=0]
 
-# create "at_risk" = 1 if at least one risk is = 1 
+# D3_risk_in_pregnancy[, .N]
+# for (concept in concept_sets_of_our_study_risk){
+#   print(paste0(concept, ": ", D3_risk_in_pregnancy[get(concept)==1, .N]))
+# }
 
-D3_pregnancy_at_risk <- D3_risk_in_pregnancy[DP_CVD == 1 |
-                                              DP_COVSICKLE == 1 |
-                                              DP_COVCOPD == 1 |
-                                              DP_COVDIAB == 1 |
-                                              DP_COVOBES == 1 |
-                                              DP_COVCKD == 1 |
-                                              DP_COVHIV == 1 |
-                                              IMMUNOSUPPR == 1 |
-                                              DP_COVCANCER == 1, 
-                                             at_risk := 1]
-
-D3_pregnancy_at_risk <- D3_pregnancy_at_risk[is.na(at_risk), at_risk :=0]
-D3_pregnancy_with_risk <- D3_pregnancy_at_risk[, -c("DP_CVD",
-                                                  "DP_COVSICKLE",
-                                                  "DP_COVCOPD",
-                                                  "DP_COVDIAB",
-                                                  "DP_COVOBES",
-                                                  "DP_COVCKD",
-                                                  "DP_COVHIV",
-                                                  "IMMUNOSUPPR",
-                                                  "DP_COVCANCER")]
-
+D3_pregnancy_with_risk <- D3_risk_in_pregnancy[, -c("DP_CVD", "DP_COVSICKLE", "DP_COVCOPD", 
+                                                   "DP_COVDIAB", "DP_COVOBES", "DP_COVCKD", 
+                                                   "DP_COVHIV", "IMMUNOSUPPR", "DP_COVCANCER",
+                                                   "COVSICKLE", "COVCOPD", "COVDIAB", 
+                                                   "COVOBES", "COVCKD", "COVHIV", "COVCANCER", 
+                                                   "HF_narrow", "HF_possible", "MYOCARD_narrow",
+                                                   "MYOCARD_possible", "CAD_narrow", "CAD_possible")]
 
 save(D3_pregnancy_with_risk, file=paste0(dirtemp,"D3_pregnancy_with_risk.RData"))
+
+rm(D3_gop, D3_groups_of_pregnancies, D3_pregnancy_outcomes, 
+   D3_risk_in_pregnancy, risk, D3_pregnancy_with_risk)
+
+for (i in concept_sets_of_our_study_risk) {
+  rm( list = i)
+}

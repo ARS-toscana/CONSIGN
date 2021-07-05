@@ -58,8 +58,9 @@ source(paste0(thisdir,"/p_steps/step_03_06_2_T2.3_merge_stream_of_same_person.R"
 # source(paste0(thisdir,"/p_steps/step_04_02_create_aggregated_outcomes.R"))
 # source(paste0(thisdir,"/p_steps/step_04_03_distance_description.R"))
 
-# 05 CREATE PREGNACIES TRIMESTERS
-source(paste0(thisdir,"/p_steps/step_05_01_create_pregnancy_trimesters.R")) 
-source(paste0(thisdir,"/p_steps/step_05_02_create_medication_in_pregnancy.R"))
-source(paste0(thisdir,"/p_steps/step_05_03... .R"))
+# 05 MEDICATION in pregnancies
+source(paste0(thisdir,"/p_steps/step_05_01_create_risk_in_pregnancy.R")) 
+source(paste0(thisdir,"/p_steps/step_05_02_create_pregnancy_trimesters.R"))
+source(paste0(thisdir,"/p_steps/step_05_03_create_medication_in_pregnancy.R"))
+
 

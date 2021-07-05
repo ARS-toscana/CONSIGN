@@ -30,18 +30,18 @@ for (concept in concept_sets_of_our_study_medications_vaccines) {
   
 }   
 
-D3_medication_in_pregnancy[, .N]
-unique(D3_medication_in_pregnancy, by = "pers_group_id")[,.N]
-for (concept in concept_sets_of_our_study_medications_vaccines){
-  D3_medication_in_pregnancy <- D3_medication_in_pregnancy[, temp:=NA]
-  D3_medication_in_pregnancy <- D3_medication_in_pregnancy[get(concept)==1, temp :=1][is.na(temp), temp:=0]
-  D3_medication_in_pregnancy <- D3_medication_in_pregnancy[, temp:= max(temp), by = "pers_group_id"]
-  
-  DF_unique <- unique(D3_medication_in_pregnancy, by = "pers_group_id")
-  print(paste0(concept, " Number: ", D3_medication_in_pregnancy[get(concept)==1, .N]))
-  print(paste0(concept, " Pregnancy: ", round(DF_unique[temp==1, .N]/DF_unique[, .N], 6)))
-  setnames(D3_medication_in_pregnancy, "temp", paste0(concept, "_in_preg"))
-}
+# D3_medication_in_pregnancy[, .N]
+# unique(D3_medication_in_pregnancy, by = "pers_group_id")[,.N]
+# for (concept in concept_sets_of_our_study_medications_vaccines){
+#   D3_medication_in_pregnancy <- D3_medication_in_pregnancy[, temp:=NA]
+#   D3_medication_in_pregnancy <- D3_medication_in_pregnancy[get(concept)==1, temp :=1][is.na(temp), temp:=0]
+#   D3_medication_in_pregnancy <- D3_medication_in_pregnancy[, temp:= max(temp), by = "pers_group_id"]
+# 
+#   DF_unique <- unique(D3_medication_in_pregnancy, by = "pers_group_id")
+#   print(paste0(concept, " Number: ", D3_medication_in_pregnancy[get(concept)==1, .N]))
+#   print(paste0(concept, " Pregnancy: ", round(DF_unique[temp==1, .N]/DF_unique[, .N], 6)))
+#   setnames(D3_medication_in_pregnancy, "temp", paste0(concept, "_in_preg"))
+# }
 
 # Clean the dataset
 CONSIGN_analytical_dataset <- D3_medication_in_pregnancy
@@ -75,6 +75,7 @@ CONSIGN_analytical_dataset_ARS <- CONSIGN_analytical_dataset[, .(id,
                                                                  trim,
                                                                  start_trim, 
                                                                  end_trim,
+                                                                 end_trim_in_2021,
                                                                  prior_to_COVID,
                                                                  covid_date, 
                                                                  covid_month,
@@ -107,9 +108,10 @@ CONSIGN_analytical_dataset_ARS <- CONSIGN_analytical_dataset[, .(id,
 CONSIGN_analytical_dataset_ARS <- CONSIGN_analytical_dataset_ARS[prior_to_COVID == 0]
 
 save(D3_medication_in_pregnancy, file=paste0(dirtemp,"D3_medication_in_pregnancy.RData"))
-fwrite(CONSIGN_analytical_dataset_ARS, paste0(diroutput,"CONSIGN_analytical_dataset_ARS.csv"))
+fwrite(CONSIGN_analytical_dataset_ARS, paste0(direxp,"CONSIGN_analytical_dataset_ARS.csv"))
 
-rm(D3_pregnancy_risk_trimester, D3_medication_in_pregnancy, MFC_medication)
+rm(D3_pregnancy_risk_trimester, D3_medication_in_pregnancy, MFC_medication,
+   CONSIGN_analytical_dataset_ARS,CONSIGN_analytical_dataset)
 for (conceptvar in concept_sets_of_our_study_medications_vaccines){
   rm(list = conceptvar) 
 }
