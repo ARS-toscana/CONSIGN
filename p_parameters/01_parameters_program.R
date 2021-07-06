@@ -67,7 +67,7 @@ source(paste0(dirmacro,"CreateFigureComponentStrategy_v4.R"))
 source(paste0(dirmacro,"DRECountThresholdV3.R"))
 
 # datasources
-datasources<-c("ARS", "UOSL", "GePaRD", "BIFAP", "FISABIO", "SIDIAP", "CNR-IFC", "CHUT", "UNIME", "CPRD", "THL")
+datasources<-c("ARS", "UOSL", "GePaRD", "BIFAP", "FISABIO", "SIDIAP", "CNR-IFC", "CHUT", "UNIME", "CPRD", "THL", "FISABIO_HSRU")
 
 #other parameters
 
@@ -110,6 +110,9 @@ for (t in list_tables){
   
   date_range[['TEST']][[t]][["since_when_data_complete"]] <- INSTANCE[source_table_name==t, list(since_when_data_complete=min(since_when_data_complete, na.rm = T))]
   date_range[['TEST']][[t]][["up_to_when_data_complete"]] <- INSTANCE[source_table_name==t, list(up_to_when_data_complete=max(up_to_when_data_complete, na.rm = T))]
+  
+  date_range[['FISABIO_HSRU']][[t]][["since_when_data_complete"]] <- INSTANCE[source_table_name==t, list(since_when_data_complete=min(since_when_data_complete, na.rm = T))]
+  date_range[['FISABIO_HSRU']][[t]][["up_to_when_data_complete"]] <- INSTANCE[source_table_name==t, list(up_to_when_data_complete=max(up_to_when_data_complete, na.rm = T))]
 } 
 
 
@@ -133,6 +136,7 @@ study_start_datasource[['PEDIANET']] <- as.Date(as.character(20180101), date_for
 study_start_datasource[['FISABIO']] <- as.Date(as.character(20170101), date_format)
 study_start_datasource[['CPRD']] <- as.Date(as.character(20170101), date_format)
 study_start_datasource[['SIDIAP']] <- as.Date(as.character(20170101), date_format)
+#study_start_datasource[['FISABIO_HSRU']] <- as.Date(as.character(20190601), date_format)
 
 study_start <- study_start_datasource[[thisdatasource]]
 
@@ -148,6 +152,7 @@ study_end_datasource[['PEDIANET']] <- as.Date(as.character(20201231), date_forma
 study_end_datasource[['FISABIO']] <- as.Date(as.character(20201130), date_format)
 study_end_datasource[['CPRD']] <- as.Date(as.character(20200930), date_format)
 study_end_datasource[['SIDIAP']] <- as.Date(as.character(20200630), date_format)
+#study_end_datasource[['FISABIO_HSRU']] <- as.Date(as.character(20201231), date_format)
 
 study_end <- study_end_datasource[[thisdatasource]]
 
@@ -169,6 +174,7 @@ study_years_datasource[['GePaRD']] <-  c("2014","2015","2016","2017")
 study_years_datasource[['FISABIO']] <-  c("2017","2018","2019","2020")
 study_years_datasource[['CPRD']] <-  c("2017","2018","2019","2020")
 study_years_datasource[['SIDIAP']] <-  c("2017","2018","2019","2020")
+#study_years_datasource[['FISABIO_HSRU']] <-  c("2019", "2020")
 
 study_years <- study_years_datasource[[thisdatasource]]
 
@@ -184,6 +190,7 @@ firstYearComponentAnalysis_datasource[['PEDIANET']] <- '2018'
 firstYearComponentAnalysis_datasource[['FISABIO']] <- '2018'
 firstYearComponentAnalysis_datasource[['CPRD']] <- '2018'
 firstYearComponentAnalysis_datasource[['SIDIAP']] <- '2018'
+#firstYearComponentAnalysis_datasource[['FISABIO_HSRU']] <- '2019'
 
 for (datas in c('ARS','BIFAP','AARHUS','GePaRD','PEDIANET','FISABIO','CPRD','SIDIAP')){
   secondYearComponentAnalysis_datasource[[datas]] = as.character(as.numeric(firstYearComponentAnalysis_datasource[[datas]])+1)

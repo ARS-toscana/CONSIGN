@@ -79,6 +79,12 @@ meaning_of_survey_our_study[["PEDIANET"]][["spontaneous_abortion"]]<-list()
 meaning_of_survey_our_study[["PEDIANET"]][["induced_termination"]]<-list()
 meaning_of_survey_our_study[["PEDIANET"]][["other"]]<-list()
 
+meaning_of_survey_our_study[["FISABIO_HSRU"]][["livebirth_or_stillbirth"]]<-list("birth_registry_child")
+meaning_of_survey_our_study[["FISABIO_HSRU"]][["ongoing_pregnancy"]]<-list()
+meaning_of_survey_our_study[["FISABIO_HSRU"]][["spontaneous_abortion"]]<-list()
+meaning_of_survey_our_study[["FISABIO_HSRU"]][["induced_termination"]]<-list()
+meaning_of_survey_our_study[["FISABIO_HSRU"]][["other"]]<-list()
+
 
 meaning_of_survey_our_study[["TEST"]][["livebirth_or_stillbirth"]]<-list("algorithm_pregnancy") 
 meaning_of_survey_our_study[["TEST"]][["ongoing_pregnancy"]]<-list()
@@ -199,6 +205,13 @@ dictonary_of_itemset[["TYPE"]][["PEDIANET"]][["MD"]]<-list()
 dictonary_of_itemset[["TYPE"]][["PEDIANET"]][["ECT"]]<-list()
 dictonary_of_itemset[["TYPE"]][["PEDIANET"]][["UNK"]]<-list()
 
+dictonary_of_itemset[["TYPE"]][["FISABIO_HSRU"]][["LB"]]<-list() 
+dictonary_of_itemset[["TYPE"]][["FISABIO_HSRU"]][["SB"]]<-list()
+dictonary_of_itemset[["TYPE"]][["FISABIO_HSRU"]][["SA"]]<-list()
+dictonary_of_itemset[["TYPE"]][["FISABIO_HSRU"]][["T"]]<-list()
+dictonary_of_itemset[["TYPE"]][["FISABIO_HSRU"]][["MD"]]<-list()
+dictonary_of_itemset[["TYPE"]][["FISABIO_HSRU"]][["ECT"]]<-list()
+dictonary_of_itemset[["TYPE"]][["FISABIO_HSRU"]][["UNK"]]<-list()
 
 dictonary_of_itemset[["TYPE"]][["TEST"]][["LB"]]<-list(list("T_PREG", "1"), list("T_PREG", "2"), list("T_PREG", "3"), list("EMB_BIFAP", "1"))
 dictonary_of_itemset[["TYPE"]][["TEST"]][["SB"]]<-list(list("T_PREG", "4"), list("EMB_BIFAP", "2"))
